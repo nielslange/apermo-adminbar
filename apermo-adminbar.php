@@ -92,7 +92,7 @@ class ApermoAdminBar {
 		$this->load_translation();
 
 		//Check if domain_mapping is active.
-		if ( $wpdb->dmtable === $wpdb->base_prefix . 'domain_mapping' ) {
+		if ( isset($wpdb->dmtable) && $wpdb->dmtable === $wpdb->base_prefix . 'domain_mapping' ) {
 			$this->domain_mapping = true;
 		}
 
@@ -453,7 +453,7 @@ class ApermoAdminBar {
 				'apermo_adminbar_sites_section_' . $key,
 				$data['label'],
 				function( $data ) {
-					return esc_html( $data['description'] );
+					return isset($data['description']) ? esc_html( $data['description'] ) : null;
 				},
 				'apermo_adminbar'
 			);
@@ -542,7 +542,7 @@ class ApermoAdminBar {
 	 * @param array $args Arguments, especially the key for the input field.
 	 */
 	public function name_render( $args ) {
-		$setting = $this->sites[ $args['key'] ]['name'];
+		$setting = isset($this->sites[ $args['key'] ]['name']) ? $this->sites[ $args['key'] ]['name'] : '';
 		echo '<input type="text" id="apermo_adminbar_sites_' . esc_attr( $args['key'] ) . '_name" name="apermo_adminbar_sites[' . $args['key'] . '][name]" placeholder="' . esc_attr( $args['data']['label'] ) . '" value="' . esc_attr( $setting ) . '" class="regular-text">';
 	}
 
@@ -552,7 +552,7 @@ class ApermoAdminBar {
 	 * @param array $args Arguments, especially the key for the input field.
 	 */
 	public function robots_render( $args ) {
-		$setting = $this->sites[ $args['key'] ]['robots'];
+		$setting = isset($this->sites[ $args['key'] ]['robots']) ? $this->sites[ $args['key'] ]['robots'] : '';
 		if ( ! in_array( $setting, array( 'yes', 'no' ) ) ) {
 			$setting = 'default';
 		}
@@ -569,7 +569,7 @@ class ApermoAdminBar {
 	 * @param array $args Arguments, especially the key for the input field.
 	 */
 	public function url_render( $args ) {
-		$setting = $this->sites[ $args['key'] ]['url'];
+		$setting = isset($this->sites[ $args['key'] ]['url']) ? $this->sites[ $args['key'] ]['url'] : '';
 		echo '<input type="url" id="apermo_adminbar_sites_' . esc_attr( $args['key'] ) . '_url" name="apermo_adminbar_sites[' . $args['key'] . '][url]" placeholder="http://..." value="' . esc_attr( $setting ) . '" class="regular-text">*';
 	}
 
@@ -579,7 +579,7 @@ class ApermoAdminBar {
 	 * @param array $args Arguments, especially the key for the input field.
 	 */
 	public function mapping_url_render( $args ) {
-		$setting = $this->sites[ $args['key'] ]['mapping_url'];
+		$setting = isset($this->sites[ $args['key'] ]['mapping_url']) ? $this->sites[ $args['key'] ]['mapping_url'] : '';
 		echo '<input type="url" id="apermo_adminbar_sites_' . esc_attr( $args['key'] ) . '_mapping_url" name="apermo_adminbar_sites[' . $args['key'] . '][mapping_url]" placeholder="http://..." value="' . esc_attr( $setting ) . '" class="regular-text">';
 	}
 
@@ -591,7 +591,7 @@ class ApermoAdminBar {
 	 */
 	public function color_render( $args ) {
 		$key = $args['key'];
-		$current_color = $this->sites[ $args['key'] ]['color'];
+		$current_color = isset($this->sites[ $args['key'] ]['color']) ? $this->sites[ $args['key'] ]['color'] : '';
 
 		if ( empty( $current_color ) || ! isset( $this->admin_colors[ $current_color ] ) ) {
 			$current_color = $args['data']['default'];
